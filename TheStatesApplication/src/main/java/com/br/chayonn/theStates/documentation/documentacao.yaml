@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: API de Cadastro de Estados
+  description: API para cadastrar os estados das cinco regiões do Brasil.
+  version: 0.0.1
+  contact:
+    name: Dev. Chayonn Marinho
+    email: chayonn@hotmail.com
+  license:
+    name: GPLv3
+    url: https://opensource.org/licenses/GPL-3.0
+servers:
+  - url: localhost:8080/apiStates
+    description: Banco de Dados da API.
+paths:
+  /states:
+    post:
+      summary: Cadastra estado no banco de dados.
+      operationId: createNewState
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Estados"
+      responses:
+        200:
+          description: Sucesso ao cadastrar novo estado.
+        400:
+          description: Erro ao cadastrar novo estado.
+        500:
+          description: Incompatibilidade ou configuração incorreta.
+    get:
+      summary: Retorna todos os estados cadastrados no banco de dados.
+      operationId: getAllStates
+      parameters:
+        - name: Ordena população e área.
+          in: query
+          description: Ordena população e área dos estados por ordem decrescente.
+          required: false
+          schema:
+            type: string
+            enum:
+            - População
+            - Área
+      responses:
+        200:
+          description: Sucesso no retorno dos estados cadastrados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Estados"
+        400:
+          description: Erro ao retornar os estados.
+  /states/regiao:
+    get:
+      summary: Retorna os estados cadastrados no banco de dados com filtro de região.
+      operationId: getAllStates
+      parameters:
+        - name: Região
+          in: query
+          description: Filtro dos estados por regiões do Brasil.
+          required: false
+          schema:
+            type: string
+            enum: [Centro-Oeste, Nordeste, Norte, Sudeste, Sul]
+      responses:
+        200:
+          description: Sucesso no retorno dos estados cadastrados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Estados"
+        400:
+          description: Erro ao retornar os estados.
+  /states/{id}:
+    get:
+      summary: Retorna um estado através da identificação por ID.
+      operationId: findStateById
+      parameters:
+        - name: id
+          in: path
+      responses:
+        200:
+          description: Sucesso ao retornar o estado por ID.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Estados"
+        400:
+          description: ID do estado não encontrado.
+        500:
+          description: Incompatibilidade ou configuração incorreta.
+    put:
+      summary: Edita um estado através da identificação por ID.
+      operationId: updateStateById
+      parameters:
+        - name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "#/components/schemas/Estados"
+      responses:
+        200:
+          description: Sucesso ao retornar o estado por ID.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Estados"
+        400:
+          description: ID do estado não encontrado.
+        500:
+          description: Incompatibilidade ou configuração incorreta.
+    delete:
+      summary: Deleta um estado através da identificação por ID.
+      operationId: deleteStateById
+      parameters:
+        - name: id
+          in: path
+      responses:
+        200:
+          description: Sucesso ao deletar o estado por ID.
+        400:
+          description: ID do estado não encontrado.
+        500:
+          description: Incompatibilidade ou configuração incorreta.
+components:
+  schemas:
+    Estados:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nome:
+          type: string
+          example: Pará
+        regiao:
+          type: string
+          enum: [Centro-Oeste, Nordeste, Norte, Sudeste, Sul]
+          example: Norte
+        populacao:
+          type: integer
+          example: 8.900.000
+        capital:
+          type: string
+          example: Belém
+        area:
+          type: integer
+          example: 1.247.955.238

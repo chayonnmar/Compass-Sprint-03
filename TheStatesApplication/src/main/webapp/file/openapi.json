@@ -1,0 +1,201 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Cadastro de Estados",
+    "description": "API para cadastrar os estados das cinco regiões do Brasil.",
+    "version": "0.0.1",
+    "contact": {
+      "name": "Dev Chayonn Marinho",
+      "email": "chayonn@hotmail.com"
+    },
+    "license": {
+      "name": "GPLv3",
+      "url": "https://opensource.org/licenses/GPL-3.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "localhost:8080/apiStates",
+      "description": "Banco de dados da API."
+    }
+  ],
+  "paths": {
+    "/states": {
+      "post": {
+        "summary": "Cadastra novo estado no banco de dados.",
+        "operationId": "createNewState",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Estados"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso ao cadastrar novo estado."
+          },
+          "400": {
+            "description": "Erro ao cadastrar novo estado."
+          }
+        }
+      },
+      "get": {
+        "summary": "Retorna todos os estados cadastrados no banco de dados.",
+        "operationId": "getAllStates",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Estados"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso no retorno dos estados cadastrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Estados"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao retornar os estados."
+          }
+        }
+      }
+    },
+    "/states/{id}": {
+      "get": {
+        "summary": "Retorna um estado através da identificação por ID.",
+        "operationId": "findStateById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso ao retornar o estado por ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Estados"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "ID do estado não encontrado."
+          }
+        }
+      },
+      "put": {
+        "summary": "Edita um estado através da identificação por ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "items": {
+                  "$ref": "#/components/schemas/Estados"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso ao retornar o estado por ID."
+          },
+          "400": {
+            "description": "ID do estado não encontrado."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um estado através da identificação por ID.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "items": {
+                  "$ref": "#/components/schemas/Estados"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso ao deletar o estado por ID."
+          },
+          "400": {
+            "description": "ID do estado não deletado"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "auth": []
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Estados": {
+        "type": "object",
+        "items": {
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "nome": {
+              "type": "string"
+            },
+            "regiao": {
+              "type": "string"
+            },
+            "populacao": {
+              "type": "integer"
+            },
+            "capital": {
+              "type": "string"
+            },
+            "area": {
+              "type": "integer"
+            },
+            "items": {
+              "$ref": "#/components/schemas/Estados"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "auth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
